@@ -1,0 +1,100 @@
+.toilet-war {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.war-status {
+  display: flex;
+  justify-content: space-between;
+  margin: 30px 0;
+}
+
+.status-card {
+  width: 45%;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f8f8f8;
+  text-align: center;
+}
+
+.count-display {
+  font-size: 3rem;
+  font-weight: bold;
+  margin: 20px 0;
+  color: #333;
+}
+
+.toilet-button {
+  background-color: #4a7dff;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.toilet-button:hover {
+  background-color: #3a6ae0;
+}
+
+.complaint-level {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.complaint {
+  font-size: 2rem;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.level-2 {
+  animation-delay: 0.5s;
+}
+
+.level-3 {
+  animation-delay: 1s;
+}
+
+.conflict-alert {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #ff4c4c;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+}
+
+.explosion-container {
+  margin: 20px auto;
+  max-width: 400px;
+}
+
+.explosion-gif {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.rules-box {
+  margin-top: 30px;
+  padding: 15px;
+  background-color: #f0f0f0;
+  border-left: 5px solid #4a7dff;
+  border-radius: 5px;
+}
+
+.rules-box h3 {
+  margin-top: 0;
+}
