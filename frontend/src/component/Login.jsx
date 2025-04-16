@@ -21,7 +21,7 @@ async function handleSubmit(e) {
     sessionStorage.setItem("User", response) 
     console.log(`Bearer ${response}`);
     axios.defaults.headers.common["Authorization"] = `Bearer ${response.token}`;
-    navigate("/home")
+    navigate("/toilet-war")
   } else {
     alert("Login Failed")
   }

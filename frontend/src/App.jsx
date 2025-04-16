@@ -2,7 +2,7 @@
 import './App.css'
 import { HashRouter as Router, Routes, Route } from 'react-router-dom'
 import { About } from './pages/About'
-import { Home } from './pages/Home'
+/* import { Home } from './pages/Home' */
 import { Landing } from './pages/Landing'
 import { ReadBlog } from './pages/ReadBlog'
 import { Navbar } from './component/Navbar.jsx'
@@ -29,9 +29,9 @@ useEffect(() => {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route element={<Layout />}>
-          <Route path="/home" element={<Home />} />
-          <Route path="/about" element={<About />} />
           <Route path="/toilet-war" element={<ToiletWar />} />
+{/*           <Route path="/home" element={<Home />} /> */}
+          <Route path="/about" element={<About />} />
           <Route path="/readblog/:id" element={<ReadBlog />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/landing" element={<Landing />}/>

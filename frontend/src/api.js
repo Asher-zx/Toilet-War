@@ -31,6 +31,9 @@ export async function getPost(id) {
 
   const response = await apiClient.get(`/posts/${id}`);
   const post = response.data
+  const data = await getImage(post.imageId)
+
+  post.image = data
 
   return post
   
@@ -38,6 +41,11 @@ export async function getPost(id) {
 }
 
 export async function createPost(post) {
+
+  await createImage(post.file)
+  const imageId = post.file.name
+   post.imageId = imageId
+
   const response = await apiClient.post(`/posts`, post);
   
   return response;
@@ -91,18 +99,79 @@ export async function verifyUser(user) {
     
 }
 
-//toilet use
-export async function getTodayToiletSession() {
 
-  const response = await apiClient.get(`/toilet/today`);
-  return response.data;
-  
-
+//images
+export async function createImage(file) {
+  const formData = new FormData();
+  formData.append('image', file);
+  const response = await axios.post(`${URL}/images`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    }
+  }); 
+  return response
 }
 
-export async function recordToiletUse() {
+export async function getImage(id) {
+const response = await axios.get(`${URL}/images/${id}`);
+return response;
+}
 
-  const response = await apiClient.post(`/toilet/use`);
+
+//get session by date
+export async function getToiletSessionByDate(date) {
+  try {
+    const formattedDate = date.toISOString().split('T')[0];
+    const response = await apiClient.get(`/toilet/date/${formattedDate}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching toilet session by date:", error);
+    if (error.response && error.response.status === 404) {
+      return {
+        userId: sessionStorage.getItem('userId') || "",
+        date: date,
+        toiletUses: 0,
+        complaints: 0,
+        conflict: false
+      };
+    }
+    throw error;
+  }
+}
+
+
+
+//toilet use
+//Decrease
+export async function decreaseToiletUse(date) {
+  const formattedDate = date.toISOString().split('T')[0]; 
+  const response = await apiClient.post(`/toilet/decrease`, { date: formattedDate });
+  return response.data;
+}
+
+//Delete session
+export async function deleteToiletSession(date) {
+  const formattedDate = date.toISOString().split('T')[0]; 
+  const response = await apiClient.delete(`/toilet/session`, { 
+    data: { date: formattedDate } 
+  });
+  return response.data;
+}
+
+//update
+export async function recordToiletUse(date = null) {
+  if (!date) {
+    const response = await apiClient.post(`/toilet/use`);
+    return response.data;
+  } else {
+    const formattedDate = date.toISOString().split('T')[0];
+    const response = await apiClient.post(`/toilet/date/${formattedDate}/use`);
+    return response.data;
+  }
+}
+
+export async function getTodayToiletSession() {
+  const response = await apiClient.get(`/toilet/today`);
   return response.data;
 }
 
