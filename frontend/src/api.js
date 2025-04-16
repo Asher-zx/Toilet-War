@@ -31,9 +31,6 @@ export async function getPost(id) {
 
   const response = await apiClient.get(`/posts/${id}`);
   const post = response.data
-  const data = await getImage(post.imageId)
-
-  post.image = data
 
   return post
   
@@ -41,11 +38,6 @@ export async function getPost(id) {
 }
 
 export async function createPost(post) {
-
-  await createImage(post.file)
-  const imageId = post.file.name
-   post.imageId = imageId
-
   const response = await apiClient.post(`/posts`, post);
   
   return response;
@@ -98,25 +90,6 @@ export async function verifyUser(user) {
   }
     
 }
-
-
-//images
-export async function createImage(file) {
-  const formData = new FormData();
-  formData.append('image', file);
-  const response = await axios.post(`${URL}/images`, formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    }
-  }); 
-  return response
-}
-
-export async function getImage(id) {
-const response = await axios.get(`${URL}/images/${id}`);
-return response;
-}
-
 
 //toilet use
 export async function getTodayToiletSession() {

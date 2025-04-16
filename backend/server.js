@@ -4,9 +4,6 @@ const cors = require('cors');
 const app = express();  
 const posts = require('./postRoutes');
 const users = require('./userRoutes');
-const awsRoutes = require('./awsRoutes');
-const multer = require('multer');
-const upload = multer();
 
 const toiletRoutes = require('./toiletRoutes');
 
@@ -26,7 +23,6 @@ app.use((req, res, next) => {
 
 app.use(posts);
 app.use(users);
-app.use(awsRoutes);
 app.use(toiletRoutes);
 
 app.listen(PORT, () => {

@@ -8,14 +8,6 @@ export const pageData = [
     path: "/about"
   },
   {
-    name: "Contact",
-    path: "/contact"
-  },
-  {
-    name: "Create Blog",
-    path: "/createblog"
-  },
-  {
     name: "Profile",
     path: "/profile"
   },
