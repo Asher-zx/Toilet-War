@@ -7,6 +7,8 @@ export function ToiletWar() {
   const [error, setError] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
+  const [showConflictAlert, setShowConflictAlert] = useState(false);
+
   const formattedDate = selectedDate.toISOString().split('T')[0];
   
   useEffect(() => {
@@ -20,6 +22,13 @@ export function ToiletWar() {
         if (intervalId) clearInterval(intervalId);
       }; 
   }, [selectedDate]);
+
+  useEffect(() => {
+    if (session?.conflict) {
+      setShowConflictAlert(true);
+    }
+  }, [session?.conflict]);
+  
 
   function isToday(date) {
     const today = new Date();
@@ -137,7 +146,9 @@ export function ToiletWar() {
     }
   };
 
-
+  const handleCloseConflictAlert = () => {
+    setShowConflictAlert(false);
+  }
   
   if (loading && !session) return <div>Loading toilet war status...</div>;
   if (error) return <div className="error">{error}</div>;
@@ -200,13 +211,16 @@ export function ToiletWar() {
         </div>
       </div>
       
-      {session?.conflict && (
-        <div className="conflict-alert">
-          <h2>CONFLICT DETECTED!</h2>
-          <div className="explosion-container">
-            <img src="/explosion.gif" alt="Nuclear Explosion" className="explosion-gif" />
+      {showConflictAlert && (
+        <div className="conflict-modal-overlay">
+          <div className='conflict-modal'>
+            <h2>CONFLICT DETECTED!</h2>
+            <div className="explosion-container">
+              <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGxybWZrcGVlY2sycHl0Z3A3czdqbW5lcGM1ZXhlNHR3N21kY2k1NCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/rhYsUMhhd6yA0/giphy.gif" alt="Nuclear Explosion" className="explosion-gif" />
+            </div>
+            <p>Your wife has complained 3 times. You're in big trouble now!</p>
+            <button onClick={handleCloseConflictAlert} className='close-conflict-btn'>Close Alert</button>
           </div>
-          <p>The wife has complained 3 times. You're in big trouble now!</p>
         </div>
       )}
       
