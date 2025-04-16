@@ -41,6 +41,73 @@ toiletRoutes.route('/toilet/today').get(verifyToken, async (req, res) => {
   }
 });
 
+// toilet use routes
+toiletRoutes.route('/toilet/use').post(verifyToken, async (req, res) => {
+  try {
+    const db = database.getDb();
+    const userId = req.user._id.toString();
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const nextDay = new Date(today);
+    nextDay.setDate(nextDay.getDate() + 1);
+    
+    let session = await db.collection('toiletSessions').findOne({
+      userId: userId,
+      date: { $gte: today, $lt: nextDay }
+    });
+    
+    if (!session) {
+      session = {
+        userId: userId,
+        date: today,
+        toiletUses: 1,
+        complaints: 0,
+        conflict: false
+      };
+      
+      await db.collection('toiletSessions').insertOne(session);
+      
+      session = await db.collection('toiletSessions').findOne({
+        userId: userId,
+        date: { $gte: today, $lt: nextDay }
+      });
+    } else {
+      const newToiletUses = session.toiletUses + 1;
+      
+      let complaints = 0;
+      if (newToiletUses >= 3) {
+        complaints = newToiletUses - 2;
+      }
+      
+      const conflict = complaints >= 3;
+      
+      await db.collection('toiletSessions').updateOne(
+        { _id: session._id },
+        { $set: {
+            toiletUses: newToiletUses,
+            complaints: complaints,
+            conflict: conflict
+          }
+        }
+      );
+      
+      session = {
+        ...session,
+        toiletUses: newToiletUses,
+        complaints: complaints,
+        conflict: conflict
+      };
+    }
+    
+    res.json(session);
+  } catch (error) {
+    console.error('Error updating toilet use:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 // Get toilet session for user
 toiletRoutes.route('/toilet/date/:date').get(verifyToken, async (req, res) => {
   try {
@@ -56,13 +123,16 @@ toiletRoutes.route('/toilet/date/:date').get(verifyToken, async (req, res) => {
     
     let session = await db.collection('toiletSessions').findOne({
       userId: userId,
-      date: { $gte: selectedDate, $lt: nextDay }
+      date: {  
+        $gte: new Date(selectedDate.setHours(0, 0, 0, 0)),
+        $lt: new Date(new Date(selectedDate).setDate(selectedDate.getDate() + 1))
+      }
     });
     
     if (!session) {
       session = {
         userId: userId,
-        date: today,
+        date: selectedDate,
         toiletUses: 0,
         complaints: 0,
         conflict: false
@@ -91,13 +161,16 @@ toiletRoutes.route('/toilet/date/:date/use').post(verifyToken, async (req, res) 
     
     let session = await db.collection('toiletSessions').findOne({
       userId: userId,
-      date: { $gte: selectedDate, $lt: nextDay }
+      date: {
+        $gte: new Date(selectedDate.setHours(0, 0, 0, 0)),
+        $lt: new Date(new Date(selectedDate).setDate(selectedDate.getDate() + 1)) 
+      }
     });
     
     if (!session) {
       session = {
         userId: userId,
-        date: today,
+        date: selectedDate,
         toiletUses: 1,
         complaints: 0,
         conflict: false
@@ -141,7 +214,7 @@ toiletRoutes.route('/toilet/date/:date/use').post(verifyToken, async (req, res) 
 });
 
 //Decrease toilet use
-toiletRoutes.route('/toilet/decrease').get(verifyToken, async (req, res) => {
+toiletRoutes.route('/toilet/decrease').post(verifyToken, async (req, res) => {  
   try {
     const db = database.getDb();
     const userId = req.user._id.toString();
@@ -159,7 +232,10 @@ toiletRoutes.route('/toilet/decrease').get(verifyToken, async (req, res) => {
     
     let session = await db.collection('toiletSessions').findOne({
       userId: userId,
-      date: { $gte: selectedDate, $lt: nextDay }
+      date: {   
+        $gte: new Date(selectedDate.setHours(0, 0, 0, 0)),
+        $lt: new Date(new Date(selectedDate).setDate(selectedDate.getDate() + 1)) 
+      }
     });
     
     if (!session || session.toiletUses <= 0) {
@@ -175,7 +251,7 @@ toiletRoutes.route('/toilet/decrease').get(verifyToken, async (req, res) => {
 
     const conflict = complaints >= 3;
     
-    await db.collection('toiletsessions').updateOne(
+    await db.collection('toiletSessions').updateOne(
       { _id: session._id },
       {
          $set: {
@@ -200,7 +276,7 @@ toiletRoutes.route('/toilet/decrease').get(verifyToken, async (req, res) => {
 });
 
 //Delete toilet session
-toiletRoutes.route('/toilet/session').get(verifyToken, async (req, res) => {
+toiletRoutes.route('/toilet/session').delete(verifyToken, async (req, res) => {
   try {
     const db = database.getDb();
     const userId = req.user._id.toString();
@@ -218,10 +294,13 @@ toiletRoutes.route('/toilet/session').get(verifyToken, async (req, res) => {
 
     const result = await db.collection('toiletSessions').deleteOne({
       userId: userId,
-      date: { $gte: selecteDatem, $lt: nextDay }
+      date: { 
+        $gte: new Date(selectedDate.setHours(0, 0, 0, 0)),
+        $lt: new Date(new Date(selectedDate).setDate(selectedDate.getDate() + 1)) 
+      }
     });
 
-    if (result.deleteCount === 0) {
+    if (result.deletedCount === 0) {
       return res.status(404).json({ message: 'Session not found' });
     }
 

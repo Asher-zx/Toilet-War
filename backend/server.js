@@ -17,6 +17,13 @@ const PORT = 3002;
 app.use(cors());
 app.use(express.json());
 app.use(upload.any())
+
+//debug
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+})
+
 app.use(posts);
 app.use(users);
 app.use(awsRoutes);
@@ -27,8 +34,3 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-//debug
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  next();
-})
