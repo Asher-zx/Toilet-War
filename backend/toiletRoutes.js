@@ -6,7 +6,8 @@ require('dotenv').config();
 
 let toiletRoutes = express.Router();
 
-// Get today's toilet session for user
+// Get today's date
+// Add this route if it's not there already
 toiletRoutes.route('/toilet/today').get(verifyToken, async (req, res) => {
   try {
     const db = database.getDb();
@@ -15,9 +16,12 @@ toiletRoutes.route('/toilet/today').get(verifyToken, async (req, res) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     
+    const nextDay = new Date(today);
+    nextDay.setDate(nextDay.getDate() + 1);
+    
     let session = await db.collection('toiletSessions').findOne({
       userId: userId,
-      date: { $gte: today }
+      date: { $gte: today, $lt: nextDay }
     });
     
     if (!session) {
@@ -37,18 +41,57 @@ toiletRoutes.route('/toilet/today').get(verifyToken, async (req, res) => {
   }
 });
 
-// Increment toilet use count
-toiletRoutes.route('/toilet/use').post(verifyToken, async (req, res) => {
+// Get toilet session for user
+toiletRoutes.route('/toilet/date/:date').get(verifyToken, async (req, res) => {
   try {
     const db = database.getDb();
     const userId = req.user._id.toString();
-  
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const dateStr = req.params.date;
+    
+    const selectedDate = new Date(dateStr);
+    selectedDate.setHours(0, 0, 0, 0);
+
+    const nextDay = new Date(selectedDate);
+    nextDay.setDate(nextDay.getDate() + 1);
     
     let session = await db.collection('toiletSessions').findOne({
       userId: userId,
-      date: { $gte: today }
+      date: { $gte: selectedDate, $lt: nextDay }
+    });
+    
+    if (!session) {
+      session = {
+        userId: userId,
+        date: today,
+        toiletUses: 0,
+        complaints: 0,
+        conflict: false
+      };
+    }
+    
+    res.json(session);
+  } catch (error) {
+    console.error('Error fetching toilet session:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// record toilet use for a specific date
+toiletRoutes.route('/toilet/date/:date/use').post(verifyToken, async (req, res) => {
+  try {
+    const db = database.getDb();
+    const userId = req.user._id.toString();
+    const dateStr = req.params.date;
+  
+    const selectedDate = new Date(dateStr);
+    selectedDate.setHours(0, 0, 0, 0);
+
+    const nextDay = new Date(selectedDate);
+    nextDay.setDate(nextDay.getDate() + 1);
+    
+    let session = await db.collection('toiletSessions').findOne({
+      userId: userId,
+      date: { $gte: selectedDate, $lt: nextDay }
     });
     
     if (!session) {
@@ -93,6 +136,98 @@ toiletRoutes.route('/toilet/use').post(verifyToken, async (req, res) => {
     res.json(session);
   } catch (error) {
     console.error('Error updating toilet use:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+//Decrease toilet use
+toiletRoutes.route('/toilet/decrease').get(verifyToken, async (req, res) => {
+  try {
+    const db = database.getDb();
+    const userId = req.user._id.toString();
+    
+    let selectedDate;
+    if (req.body.date) {
+      selectedDate = new Date(req.body.date);
+    } else {
+      selectedDate = new Date();
+    }
+    selectedDate.setHours(0, 0, 0, 0);
+
+    const nextDay = new Date(selectedDate);
+    nextDay.setDate(nextDay.getDate() + 1);
+    
+    let session = await db.collection('toiletSessions').findOne({
+      userId: userId,
+      date: { $gte: selectedDate, $lt: nextDay }
+    });
+    
+    if (!session || session.toiletUses <= 0) {
+      return res.status(400).json({ message: 'No toilet use to decrease' });
+    }
+
+    const newToiletUses = Math.max(0, session.toiletUses -1);
+
+    let complaints = 0;
+    if (newToiletUses >= 3) {
+      complaints = newToiletUses - 2;
+    }
+
+    const conflict = complaints >= 3;
+    
+    await db.collection('toiletsessions').updateOne(
+      { _id: session._id },
+      {
+         $set: {
+          toiletUses: newToiletUses,
+          complaints: complaints,
+          conflict: conflict
+         }
+      }
+    );
+    session = {
+      ...session,
+      toiletUses: newToiletUses,
+      complaints: complaints,
+      conflict: conflict
+    };
+
+    res.json(session);
+  } catch (error) {
+    console.error('Error fetching toilet session:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+//Delete toilet session
+toiletRoutes.route('/toilet/session').get(verifyToken, async (req, res) => {
+  try {
+    const db = database.getDb();
+    const userId = req.user._id.toString();
+    
+    let selectedDate;
+    if (req.body.date) {
+      selectedDate = new Date(req.body.date);
+    } else {
+      selectedDate = new Date();
+    }
+    selectedDate.setHours(0, 0, 0, 0);
+
+    const nextDay = new Date(selectedDate);
+    nextDay.setDate(nextDay.getDate() + 1);
+
+    const result = await db.collection('toiletSessions').deleteOne({
+      userId: userId,
+      date: { $gte: selecteDatem, $lt: nextDay }
+    });
+
+    if (result.deleteCount === 0) {
+      return res.status(404).json({ message: 'Session not found' });
+    }
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error fetching toilet session:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });

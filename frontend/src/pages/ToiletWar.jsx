@@ -1,16 +1,62 @@
 import { useEffect, useState } from 'react';
-import { getTodayToiletSession, recordToiletUse } from '../api';
+import { getTodayToiletSession, recordToiletUse, getToiletSessionByDate, decreaseToiletUse, deleteToiletSession } from '../api';
 
 export function ToiletWar() {
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const formattedDate = selectedDate.toISOString().split('T')[0];
   
   useEffect(() => {
+    loadToiletSession();
+
+    let intervalId;
+    if (isToday(selectedDate)) {
+      intervalId = setInterval(loadToiletSession, 60000);
+    }
+      return () => {
+        if (intervalId) clearInterval(intervalId);
+      }; 
+  }, [selectedDate]);
+
+  function isToday(date) {
+    const today = new Date();
+    return date.getDate() === today.getDate() &&
+           date.getMonth() === today.getMonth() &&
+           date.getFullYear() === today.getFullYear();
+  }
+
+  async function loadToiletSession() {
+    try {
+      setLoading(true);
+      let data;
+      if (isToday(selectedDate)) {
+        data = await getTodayToiletSession();
+      } else {
+        data = await getToiletSessionByDate(selectedDate);
+      }
+      setSession(data);
+      setError(null);
+    } catch (err) {
+      console.error("Failed to load toilet session:", err);
+      setError("Failed to load data. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+/*   useEffect(() => {
     async function loadToiletSession() {
       try {
         setLoading(true);
-        const data = await getTodayToiletSession();
+        let data;
+        if (isToday(selectedDate)) {
+          data = await getTodayToiletSession();
+        } else {
+          data = await getToiletSessionByDate(selectedDate);
+        }
         setSession(data);
         setError(null);
       } catch (err) {
@@ -26,13 +72,27 @@ export function ToiletWar() {
     const intervalId = setInterval(loadToiletSession, 60000);
     
     return () => clearInterval(intervalId);
-  }, []);
+  }, []); */
   
+  //handle date change
+  const handleDateChange = (e) => {
+    const newDate = new Date(e.target.value);
+    setSelectedDate(newDate);
+  };
+
+
   const handleToiletUse = async () => {
     try {
       setLoading(true);
-      const updatedSession = await recordToiletUse();
-      setSession(updatedSession);
+      let updatedSession;
+
+      if (isToday(selectedDate)) {
+        updatedSession = await recordToiletUse();
+      } else {
+        updatedSession = await recordToiletUse(selectedDate);
+      }
+
+      setSession(updatedSession); 
     } catch (err) {
       console.error("Failed to record toilet use:", err);
       setError("Failed to record toilet use. Please try again.");
@@ -40,6 +100,44 @@ export function ToiletWar() {
       setLoading(false);
     }
   };
+
+  //decrease toilet use
+  const handleDecreaseToiletUse = async () => {
+    try {
+      setLoading(true);
+      let updatedSession = await decreaseToiletUse(selectedDate);
+      setSession(updatedSession);
+    } catch (err) {
+      console.error('Failed to decrease toilet use:', err);
+      setError('Failed to decrease toilet use. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  //Delete toilet session 
+  const handleDeleteSession = async () => {
+    if (!confirm('Are you sure you want to delete this session?')) return;
+
+    try {
+      setLoading(true);
+      await deleteToiletSession(selectedDate);
+      setSession({
+        userId: session?.userId || "",
+        date: selectedDate,
+        toiletUses: 0,
+        complaints: 0,
+        conflict: false
+      });
+    } catch (err) {
+      console.error("Failed to delete session:", err);
+      setError("Failed to delete session. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
   
   if (loading && !session) return <div>Loading toilet war status...</div>;
   if (error) return <div className="error">{error}</div>;
@@ -48,16 +146,47 @@ export function ToiletWar() {
     <div className="toilet-war">
       <h1>Toilet War</h1>
       
+      {/* date select */}
+      <div className='date-selector'>
+        <label htmlFor="date-select">Select Date: </label>
+        <input type="date"
+               id='date-select'
+               value={formattedDate}
+               onChange={handleDateChange}
+               max={new Date().toISOString().split('T')[0]} />
+        {!isToday(selectedDate) && (
+          <span className='history-badge'>Historical Date</span>
+        )}
+      </div>
+
       <div className="war-status">
         <div className="status-card">
-          <h2>Husband's Toilet Uses Today</h2>
+          <h2>Husband's Toilet Uses {isToday(selectedDate) ? 'Today' : 'on Selected Date'}</h2>
           <div className="count-display">{session?.toiletUses || 0}</div>
-          <button 
+          <div className='button-group'>
+            <button 
             onClick={handleToiletUse}
             className="toilet-button"
-          >
-            Record Toilet Use
-          </button>
+            >
+            Add Use (+1)
+            </button>
+            {session?.toiletUses > 0 && (
+              <button 
+              onClick={handleDecreaseToiletUse}
+              className="toilet-button decrease"
+              >
+              Decrease (-1)
+              </button>
+            )}
+
+            {session && session._id && (
+              <button 
+                onClick={handleDeleteSession}
+                className="toilet-button delete">
+                Delete Session
+              </button>
+            )}
+          </div>
         </div>
         
         <div className="status-card">
