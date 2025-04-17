@@ -173,7 +173,7 @@ export function ToiletWar() {
       <div className="war-status">
         <div className="status-card">
           <h2>Husband's PooPoo Time {isToday(selectedDate) ? 'Today' : 'on Selected Date'}</h2>
-          <div className="count-display" data-emoji="🚽">{session?.toiletUses || 0}</div>
+          <div className="count-display">{session?.toiletUses || 0}</div>
           <div className='button-group'>
             <button 
             onClick={handleToiletUse}
@@ -202,7 +202,7 @@ export function ToiletWar() {
         
         <div className="status-card">
           <h2>Wife's Complaints</h2>
-          <div className="count-display" data-emoji="😤">{session?.complaints || 0}</div>
+          <div className="count-display">{session?.complaints || 0}</div>
           <div className="complaint-level">
             {session?.complaints >= 1 && <div className="complaint level-1">😠</div>}
             {session?.complaints >= 2 && <div className="complaint level-2">😡</div>}

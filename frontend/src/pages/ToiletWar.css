@@ -1,184 +1,152 @@
-@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
-
 .toilet-war {
-  max-width: 850px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 25px;
-  font-family: 'Comic Neue', cursive;
-  background-color: #f0f8ff;
-  border-radius: 20px;
-  border: 4px dashed #9370db;
-  position: relative;
-}
-
-.toilet-war::before {
-  content: '🧻';
-  position: absolute;
-  top: -20px;
-  right: 20px;
-  font-size: 40px;
-  animation: roll 10s linear infinite;
-}
-
-.toilet-war h1 {
-  text-align: center;
-  color: #8a2be2;
-  font-size: 3rem;
-  text-shadow: 3px 3px 0 #ffd700;
-  margin-bottom: 30px;
-  transform: rotate(-2deg);
+  padding: 20px;
+  font-family: Arial, sans-serif;
 }
 
 .war-status {
   display: flex;
   justify-content: space-between;
   margin: 30px 0;
-  perspective: 1000px;
 }
 
 .status-card {
   width: 45%;
-  padding: 25px;
-  border-radius: 15px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f8f8f8;
   text-align: center;
-  transform-style: preserve-3d;
-  transition: transform 0.5s ease;
-  border: 3px solid;
-}
-
-.status-card:first-child {
-  border-color: #4a7dff;
-  transform: rotate(-2deg);
-}
-
-.status-card:last-child {
-  border-color: #ff4c4c;
-  transform: rotate(2deg);
-}
-
-.status-card:hover {
-  transform: translateZ(20px) rotate(0deg);
-}
-
-.status-card h2 {
-  font-size: 1.8rem;
-  color: #333;
-  margin-top: 0;
-  position: relative;
-}
-
-.status-card:first-child h2::before {
-  content: '🚽';
-  margin-right: 10px;
-}
-
-.status-card:last-child h2::before {
-  content: '👩';
-  margin-right: 10px;
 }
 
 .count-display {
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: bold;
-  margin: 25px 0;
+  margin: 20px 0;
   color: #333;
-  text-shadow: 2px 2px 0 #ccc;
-  position: relative;
-  display: inline-block;
-}
-
-.count-display::after {
-  content: attr(data-emoji);
-  position: absolute;
-  top: -15px;
-  right: -40px;
-  font-size: 2rem;
-  animation: bounce 2s infinite;
 }
 
 .toilet-button {
   background-color: #4a7dff;
   color: white;
   border: none;
-  padding: 14px 28px;
-  font-size: 1.1rem;
-  border-radius: 50px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  border-radius: 5px;
   cursor: pointer;
-  transition: all 0.3s;
-  font-family: 'Comic Neue', cursive;
-  font-weight: bold;
-  box-shadow: 0 5px 0 #3a6ae0;
-  position: relative;
-  overflow: hidden;
-}
-
-.toilet-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-  transition: left 0.5s;
+  transition: background-color 0.3s;
 }
 
 .toilet-button:hover {
-  transform: translateY(-3px);
-}
-
-.toilet-button:active {
-  transform: translateY(2px);
-  box-shadow: 0 3px 0 #3a6ae0;
-}
-
-.toilet-button:hover::before {
-  left: 100%;
+  background-color: #3a6ae0;
 }
 
 .complaint-level {
   display: flex;
   justify-content: center;
-  gap: 15px;
-  margin-top: 15px;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 .complaint {
-  font-size: 2.5rem;
-  filter: drop-shadow(0 0 5px rgba(255,0,0,0.5));
+  font-size: 2rem;
+  animation: pulse 1.5s infinite;
 }
 
-.level-1 {
-  animation: shake 2s infinite;
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
 }
 
 .level-2 {
-  animation: shake 1.5s infinite;
   animation-delay: 0.5s;
 }
 
 .level-3 {
-  animation: shake 1s infinite;
   animation-delay: 1s;
 }
 
-@keyframes shake {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(15deg); }
-  75% { transform: rotate(-15deg); }
+.conflict-alert {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #ff4c4c;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
 }
 
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
+.explosion-container {
+  margin: 20px auto;
+  max-width: 400px;
 }
 
-@keyframes roll {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.explosion-gif {
+  width: 100%;
+  border-radius: 5px;
 }
+
+.rules-box {
+  margin-top: 30px;
+  padding: 15px;
+  background-color: #f0f0f0;
+  border-left: 5px solid #4a7dff;
+  border-radius: 5px;
+}
+
+.rules-box h3 {
+  margin-top: 0;
+}
+
+.date-selector {
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.date-selector input {
+  margin: 0 10px;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.history-badge {
+  background-color: #ff9800;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  margin-left: 10px;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.toilet-button.decrease {
+  background-color: #ff9800;
+}
+
+.toilet-button.decrease:hover {
+  background-color: #e68a00;
+}
+
+.toilet-button.delete {
+  background-color: #f44336;
+}
+
+.toilet-button.delete:hover {
+  background-color: #d32f2f;
+}
+
+
 
 .conflict-modal-overlay {
   position: fixed;
@@ -186,214 +154,74 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  animation: flashingBg 1s infinite;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 .conflict-modal {
   background-color: #ff4c4c;
-  border-radius: 20px;
-  border: 5px solid #ffcc00;
-  padding: 30px;
-  width: 85%;
-  max-width: 550px;
+  border-radius: 10px;
+  padding: 20px;
+  width: 80%;
+  max-width: 500px;
   color: white;
   text-align: center;
-  box-shadow: 0 0 30px rgba(255, 0, 0, 0.7);
-  animation: wobble 1s infinite;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  animation: slideIn 0.4s ease-out;
 }
 
 .close-conflict-btn {
-  background-color: #ffcc00;
+  background-color: white;
   color: #ff4c4c;
   border: none;
-  padding: 15px 30px;
-  font-size: 1.2rem;
+  padding: 10px 20px;
+  font-size: 1rem;
   font-weight: bold;
-  border-radius: 50px;
-  margin-top: 20px;
+  border-radius: 5px;
+  margin-top: 15px;
   cursor: pointer;
-  font-family: 'Comic Neue', cursive;
-  box-shadow: 0 5px 0 #cc9900;
-  transition: all 0.3s;
+  transition: background-color 0.2s;
 }
 
 .close-conflict-btn:hover {
-  background-color: #ffd700;
-  transform: scale(1.05);
+  background-color: #f0f0f0;
 }
 
-.close-conflict-btn:active {
-  transform: translateY(3px);
-  box-shadow: 0 2px 0 #cc9900;
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-@keyframes flashingBg {
-  0%, 100% { background-color: rgba(0, 0, 0, 0.8); }
-  50% { background-color: rgba(255, 0, 0, 0.3); }
-}
-
-@keyframes wobble {
-  0%, 100% { transform: rotate(-1deg); }
-  50% { transform: rotate(1deg); }
-}
-
-.conflict-modal .explosion-container {
-  margin: 20px auto;
-  max-width: 400px;
-  position: relative;
+@keyframes slideIn {
+  from { 
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to { 
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .conflict-modal .explosion-gif {
   width: 100%;
-  border-radius: 15px;
-  border: 3px solid yellow;
+  max-width: 300px;
+  border-radius: 5px;
+  margin: 10px 0;
 }
 
 .conflict-modal h2 {
   margin-top: 0;
-  font-size: 2.5rem;
-  text-shadow: 3px 3px 0 #cc0000;
-  animation: pulse 0.7s infinite;
-  letter-spacing: 2px;
-}
-
-.conflict-modal p {
-  font-size: 1.3rem;
-  line-height: 1.5;
-  margin: 20px 0;
-}
-
-.rules-box {
-  margin-top: 40px;
-  padding: 20px;
-  background-color: #fffacd;
-  border: 3px dotted #ff9800;
-  border-radius: 15px;
-  position: relative;
-  transform: rotate(1deg);
-}
-
-.rules-box::before {
-  content: '📜';
-  position: absolute;
-  top: -15px;
-  left: 20px;
-  font-size: 30px;
-}
-
-.rules-box h3 {
-  margin-top: 0;
-  color: #ff6600;
-  font-size: 1.5rem;
-  text-decoration: underline wavy #ff9800;
-}
-
-.rules-box ul {
-  list-style-type: none;
-  padding-left: 10px;
-}
-
-.rules-box li {
-  margin-bottom: 10px;
-  position: relative;
-  padding-left: 30px;
-  font-size: 1.1rem;
-}
-
-.rules-box li::before {
-  content: '💩';
-  position: absolute;
-  left: 0;
-  top: 0;
-}
-
-.date-selector {
-  margin: 25px 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
-  padding: 15px;
-  border-radius: 50px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.date-selector label {
-  font-weight: bold;
-  font-size: 1.2rem;
-  color: #4a7dff;
-  margin-right: 10px;
-}
-
-.date-selector input {
-  margin: 0 10px;
-  padding: 10px 15px;
-  border-radius: 25px;
-  border: 2px solid #4a7dff;
-  font-size: 1rem;
-  font-family: 'Comic Neue', cursive;
-}
-
-.history-badge {
-  background-color: #ff9800;
-  color: white;
-  padding: 5px 12px;
-  border-radius: 50px;
-  font-size: 0.9rem;
-  margin-left: 10px;
-  animation: pulse 2s infinite;
-  box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
-}
-
-.button-group {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 15px;
-}
-
-.toilet-button.decrease {
-  background-color: #ff9800;
-  box-shadow: 0 5px 0 #e68a00;
-}
-
-.toilet-button.decrease:active {
-  box-shadow: 0 3px 0 #e68a00;
-}
-
-.toilet-button.delete {
-  background-color: #f44336;
-  box-shadow: 0 5px 0 #d32f2f;
-}
-
-.toilet-button.delete:active {
-  box-shadow: 0 3px 0 #d32f2f;
-}
-
-.status-card:first-child::after {
-  content: '🧻';
-  position: absolute;
-  bottom: -15px;
-  right: -15px;
-  font-size: 40px;
-  transform: rotate(15deg);
-}
-
-.status-card:last-child::after {
-  content: '🔥';
-  position: absolute;
-  bottom: -15px;
-  right: -15px;
-  font-size: 40px;
-  transform: rotate(-15deg);
+  font-size: 2rem;
+  animation: pulse 1s infinite;
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); }
+  0% { transform: scale(1); }
   50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
 }
