@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+.landing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100vw;
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  padding: 20px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.landing::before {
+  content: "🚽";
+  font-size: 50px;
+  margin-bottom: 20px;
+  animation: bounce 2s infinite;
+}
+
+.landing h1 {
+  color: #1565c0;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.auth-container {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 20px;
+}
+
+.landing form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.landing input {
+  padding: 10px 1px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100%;
+}
+
+.landing input:focus {
+  outline: none;
+  border-color: #1565c0;
+}
+
+.landing button[type="submit"] {
+  background-color: #1565c0;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 12px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.landing button[type="submit"]:hover {
+  background-color: #0d47a1;
+}
+
+.toggle-button {
+  background-color: transparent;
+  color: #1565c0;
+  border: 2px solid #1565c0;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.toggle-button:hover {
+  background-color: #1565c0;
+  color: white;
+}
+
+.app-desc {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 30px;
+  color: #455a64;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+@media (max-width: 480px) {
+  .landing h1 {
+    font-size: 2rem;
+  }
+  
+  .auth-container {
+    padding: 20px;
+  }
+}
