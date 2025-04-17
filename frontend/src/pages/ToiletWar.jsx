@@ -216,7 +216,7 @@ export function ToiletWar() {
           <div className='conflict-modal'>
             <h2>CONFLICT DETECTED!</h2>
             <div className="explosion-container">
-              <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGxybWZrcGVlY2sycHl0Z3A3czdqbW5lcGM1ZXhlNHR3N21kY2k1NCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/rhYsUMhhd6yA0/giphy.gif" alt="Nuclear Explosion" className="explosion-gif" />
+              <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGxybWZrcGVlY2sycHl0Z3A3czdqbW5lcGM1ZXhlNHR3N21kY2k1NCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/YA6dmVW0gfIw8/giphy.gif" alt="Nuclear Explosion" className="explosion-gif" />
             </div>
             <p>Your wife has complained 3 times. You're in big trouble now! Happy Time Gone!!!</p>
             <button onClick={handleCloseConflictAlert} className='close-conflict-btn'>Close</button>
