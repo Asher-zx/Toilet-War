@@ -5,16 +5,12 @@
       "src": "frontend/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist",
-        "framework": "vite"
+        "distDir": "dist"
       }
     },
     {
       "src": "backend/server.js",
-      "use": "@vercel/node",
-      "config": {
-        "runtime": "nodejs18.x"
-      }
+      "use": "@vercel/node"
     }
   ],
   "routes": [

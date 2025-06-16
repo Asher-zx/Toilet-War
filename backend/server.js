@@ -11,13 +11,20 @@ const toiletRoutes = require('./toiletRoutes');
 
 const PORT = 3003;
 
+const allowedOrigins = [
+  'http://localhost:5173', 
+  'https://toilet-war.vercel.app' 
+];
+
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production'  
-    ? ['https://your-vercel-app.vercel.app'] 
-    : ['http://localhost:5173'],
-  credentials: true
+  origin: allowedOrigins,
+  credentials: true 
 }));
 app.use(express.json());
+
+app.get('/api/toilet/today', (req, res) => {
+  res.json({ message: 'Toilet data for today' });
+});
 
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/toilet_war', {
   useNewUrlParser: true,
