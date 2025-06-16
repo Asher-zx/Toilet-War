@@ -30,7 +30,6 @@ useEffect(() => {
         <Route path="/" element={<Landing />} />
         <Route element={<Layout />}>
           <Route path="/toilet-war" element={<ToiletWar />} />
-{/*           <Route path="/home" element={<Home />} /> */}
           <Route path="/about" element={<About />} />
           <Route path="/readblog/:id" element={<ReadBlog />} />
           <Route path="/profile" element={<Profile />} />

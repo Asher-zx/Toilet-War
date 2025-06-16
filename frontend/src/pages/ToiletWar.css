@@ -2,6 +2,52 @@
   margin: 0 auto;
   padding: 20px;
   font-family: Arial, sans-serif;
+  color: #333;
+}
+
+@media (prefers-color-scheme: dark) {
+  .toilet-war {
+    background-color: #1a1a1a;
+    color: #ffffff;
+  }
+  
+  .status-card {
+    background-color: #2d2d2d !important;
+    color: #ffffff !important;
+    border: 1px solid #404040;
+  }
+  
+  .status-card h2 {
+    color: #ffffff !important;
+  }
+  
+  .count-display {
+    color: #ffffff !important;
+  }
+  
+  .rules-box {
+    background-color: #2d2d2d !important;
+    color: #ffffff !important;
+    border-left-color: #64b5f6 !important;
+  }
+  
+  .rules-box h3 {
+    color: #64b5f6 !important;
+  }
+  
+  .date-selector label {
+    color: #ffffff !important;
+  }
+  
+  .date-selector input {
+    background-color: #404040 !important;
+    color: #ffffff !important;
+    border-color: #666666 !important;
+  }
+  
+  .history-badge {
+    background-color: #ff6d00 !important;
+  }
 }
 
 .war-status {

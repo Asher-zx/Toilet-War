@@ -1,7 +1,7 @@
 export const pageData = [
   {
-    name: "Home",
-    path: "/home"
+    name: "Toilet War",
+    path: "/toilet-war"
   },
   {
     name: "About Us",
@@ -10,9 +10,5 @@ export const pageData = [
   {
     name: "Profile",
     path: "/profile"
-  },
-  {
-    name: "Toilet War",
-    path: "/toilet-war"
   }
 ]
