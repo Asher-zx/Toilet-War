@@ -13,7 +13,7 @@
       "src": "backend/server.js",
       "use": "@vercel/node",
       "config": {
-        "runtime": "nodejs20.x"
+        "runtime": "nodejs18.x"
       }
     }
   ],
