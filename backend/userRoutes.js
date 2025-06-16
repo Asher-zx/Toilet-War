@@ -11,7 +11,7 @@ let userRoutes = express.Router();
 
 //#1 Retreive all 
 //http://localhost:3000/users
-userRoutes.route('/users').get(async (req, res) => {
+userRoutes.route('/api/users').get(async (req, res) => {
   let db = database.getDb()
   let data = await db.collection('users').find({}).toArray()
   if (data.length > 0) {
@@ -23,7 +23,7 @@ userRoutes.route('/users').get(async (req, res) => {
 
 //#2 Retreive One 
 //http://localhost:3000/users/12345
-userRoutes.route('/users/:id').get(async (req, res) => {
+userRoutes.route('/api/users/:id').get(async (req, res) => {
   let db = database.getDb()
   let data = await db.collection('users').findOne({ _id: new ObjectId(req.params.id) })
   if (Object.keys(data).length > 0) {
@@ -34,7 +34,7 @@ userRoutes.route('/users/:id').get(async (req, res) => {
 })
 
 //#3 Create one 
-userRoutes.route('/users').post(async (req, res) => {
+userRoutes.route('/api/users').post(async (req, res) => {
   let db = database.getDb()
 
   const takenEmail = await db.collection("users").findOne({ email: req.body.email })
@@ -58,7 +58,7 @@ userRoutes.route('/users').post(async (req, res) => {
 
 
 //#4 update one 
-userRoutes.route('/users/:id').put(async (req, res) => {
+userRoutes.route('/api/users/:id').put(async (req, res) => {
   let db = database.getDb()
   let mongoObject = {
     name: req.body.name,
@@ -75,14 +75,14 @@ userRoutes.route('/users/:id').put(async (req, res) => {
 
 
 //#5 delete one
-userRoutes.route('/users/:id').delete(async (req, res) => {
+userRoutes.route('/api/users/:id').delete(async (req, res) => {
   let db = database.getDb()
   let data = await db.collection('users').deleteOne({ _id: new ObjectId(req.params.id) })
   res.json(data)
 })
 
 //#6 Login 
-userRoutes.route('/users/login').post(async (req, res) => {
+userRoutes.route('/api/users/login').post(async (req, res) => {
   let db = database.getDb()
 
   const user = await db.collection("users").findOne({ email: req.body.email })
@@ -102,7 +102,7 @@ userRoutes.route('/users/login').post(async (req, res) => {
 })
 
 //toilet session
-userRoutes.route('/users/session').get(async (req, res) => {
+userRoutes.route('/api/users/session').get(async (req, res) => {
   try {
     const db = database.getDb();
     const userId = req.user._id.toString();

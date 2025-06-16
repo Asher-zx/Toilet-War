@@ -4,15 +4,29 @@ const cors = require('cors');
 const app = express();  
 const posts = require('./postRoutes');
 const users = require('./userRoutes');
-
+const mongoose = require('mongoose');
 const toiletRoutes = require('./toiletRoutes');
 
 
 
 const PORT = 3003;
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production'  
+    ? ['https://your-vercel-app.vercel.app'] 
+    : ['http://localhost:5173'],
+  credentials: true
+}));
 app.use(express.json());
+
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/toilet_war', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'OK', message: 'Toilet War API is running!' });
+});
 
 //debug
 app.use((req, res, next) => {
@@ -20,12 +34,17 @@ app.use((req, res, next) => {
   next();
 })
 
-app.use(posts);
-app.use(users);
-app.use(toiletRoutes);
+app.use('/api', posts);
+app.use('/api', users);
+app.use('/api', toiletRoutes);
 
-app.listen(PORT, () => {
-  connect.connectToServer();
-  console.log(`Server is running on port ${PORT}`);
-});
+
+module.exports = app;
+
+if (process.env.NODE_ENV !== 'production') {
+  const port = process.env.PORT || 3003;
+  app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+  });
+}
 

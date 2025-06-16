@@ -1,10 +1,13 @@
 import axios from 'axios';
 
-const URL = 'http://localhost:3003';
+const URL = import.meta.env.MODE === 'production' 
+  ? 'https://toilet-war.vercel.app/api'
+  : 'http://localhost:3003';
 
 // added content
 const apiClient = axios.create({
-  baseURL: URL
+  baseURL: URL,
+  timeout: 10000,
 });
 
 apiClient.interceptors.request.use((config) => {

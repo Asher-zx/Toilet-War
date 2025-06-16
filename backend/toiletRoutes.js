@@ -8,7 +8,7 @@ let toiletRoutes = express.Router();
 
 // Get today's date
 // Add this route if it's not there already
-toiletRoutes.route('/toilet/today').get(verifyToken, async (req, res) => {
+toiletRoutes.route('/api/toilet/today').get(verifyToken, async (req, res) => {
   try {
     const db = database.getDb();
     const userId = req.user._id.toString();
@@ -42,7 +42,7 @@ toiletRoutes.route('/toilet/today').get(verifyToken, async (req, res) => {
 });
 
 // toilet use routes
-toiletRoutes.route('/toilet/use').post(verifyToken, async (req, res) => {
+toiletRoutes.route('/api/toilet/use').post(verifyToken, async (req, res) => {
   try {
     const db = database.getDb();
     const userId = req.user._id.toString();
@@ -109,7 +109,7 @@ toiletRoutes.route('/toilet/use').post(verifyToken, async (req, res) => {
 });
 
 // Get toilet session for user
-toiletRoutes.route('/toilet/date/:date').get(verifyToken, async (req, res) => {
+toiletRoutes.route('/api/toilet/date/:date').get(verifyToken, async (req, res) => {
   try {
     const db = database.getDb();
     const userId = req.user._id.toString();
@@ -147,7 +147,7 @@ toiletRoutes.route('/toilet/date/:date').get(verifyToken, async (req, res) => {
 });
 
 // record toilet use for a specific date
-toiletRoutes.route('/toilet/date/:date/use').post(verifyToken, async (req, res) => {
+toiletRoutes.route('/api/toilet/date/:date/use').post(verifyToken, async (req, res) => {
   try {
     const db = database.getDb();
     const userId = req.user._id.toString();
@@ -214,7 +214,7 @@ toiletRoutes.route('/toilet/date/:date/use').post(verifyToken, async (req, res) 
 });
 
 //Decrease toilet use
-toiletRoutes.route('/toilet/decrease').post(verifyToken, async (req, res) => {  
+toiletRoutes.route('/api/toilet/decrease').post(verifyToken, async (req, res) => {  
   try {
     const db = database.getDb();
     const userId = req.user._id.toString();
@@ -276,7 +276,7 @@ toiletRoutes.route('/toilet/decrease').post(verifyToken, async (req, res) => {
 });
 
 //Delete toilet session
-toiletRoutes.route('/toilet/session').delete(verifyToken, async (req, res) => {
+toiletRoutes.route('/api/toilet/session').delete(verifyToken, async (req, res) => {
   try {
     const db = database.getDb();
     const userId = req.user._id.toString();
@@ -312,7 +312,7 @@ toiletRoutes.route('/toilet/session').delete(verifyToken, async (req, res) => {
 });
 
 // Get toilet usage history
-toiletRoutes.route('/toilet/history').get(verifyToken, async (req, res) => {
+toiletRoutes.route('/api/toilet/history').get(verifyToken, async (req, res) => {
   try {
     const db = database.getDb();
     const userId = req.user._id.toString();
