@@ -2,7 +2,6 @@
 import './App.css'
 import { HashRouter as Router, Routes, Route } from 'react-router-dom'
 import { About } from './pages/About'
-/* import { Home } from './pages/Home' */
 import { Landing } from './pages/Landing'
 import { ReadBlog } from './pages/ReadBlog'
 import { Navbar } from './component/Navbar.jsx'
